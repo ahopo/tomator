@@ -1,0 +1,74 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below if using dep)
+# vendor/
+
+# Compiled Object files, Static and Dynamic libs (remove the comment below if using go modules)
+*.o
+*.a
+*.lib
+
+# Go language artifacts
+/_test/
+*.test
+/cached_test.go
+
+# Output of the go coverage tool, specifically when used with `go test -coverprofile`
+*.cover
+
+# Anything in a go environment folder
+/.go/
+
+# Automatically generated files. Might not be included in all .gitignore files.
+*.pot
+*.potx
+*.pbl
+*.pblx
+
+# Ignore IntelliJ IDEA project files
+.idea/
+
+# Ignore Visual Studio Code project files
+.vscode/
+
+# Ignore macOS metadata and thumbnail files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Ignore system and backup files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.bak
+*.swp
+*~
+
+# Ignore binary and archive files
+*.zip
+*.gz
+*.tar
+*.rar
+
+# Ignore log files and runtime data
+*.log
+*.pid
+*.lock
+
+# Ignore binary and executable files
+bin/
+dist/
