@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 	"tomator/cmd/common/helper"
+
+	"gopkg.in/yaml.v2"
 )
 
 func InitFile(file_name string) *File {
@@ -77,4 +79,10 @@ func (_f *File) Write(content string) bool {
 		return false
 	}
 	return true
+}
+
+func SturctToYML(_struct interface{}) string {
+	data, err := yaml.Marshal(_struct)
+	helper.CheckError(err, false)
+	return string(data)
 }

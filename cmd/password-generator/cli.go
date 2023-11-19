@@ -7,7 +7,7 @@ func Command() (passCom *cli.Command) {
 	passCom.Name = "generate-password"
 	passCom.Usage = "To generate password."
 	passCom.Aliases = []string{"gp"}
-	passCom.Action = generate().password
+	passCom.Action = model().password
 	passCom.Flags = CommonFlag
 	return
 }

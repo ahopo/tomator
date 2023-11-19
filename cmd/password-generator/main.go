@@ -3,20 +3,28 @@ package passwordgenerator
 import (
 	"fmt"
 	"log"
+	"tomator/cmd/common/util"
 
 	"github.com/sethvargo/go-password/password"
 	"github.com/urfave/cli/v2"
 )
 
-func generate() Generate {
-	return Generate{}
+func model() Model {
+	return Model{}
 }
-func (pg Generate) password(cCtx *cli.Context) error {
+func (pg Model) password(cCtx *cli.Context) error {
 	n := cCtx.Int("length") / 2
-	res, err := password.Generate(cCtx.Int("length"), n, 0, cCtx.Bool("allow-upper"), cCtx.Bool("allow-repeats"))
+	allowUpper := cCtx.Bool("allow-upper")
+	allowRepeats := cCtx.Bool("allow-repeats")
+	pass, err := password.Generate(cCtx.Int("length"), n, 0, !allowUpper, allowRepeats)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(res)
+	pg.Allow_repeats = allowRepeats
+	pg.Allow_upper = allowUpper
+	pg.Length = cCtx.Int("length")
+	pg.Pass = pass
+
+	fmt.Println(util.SturctToYML(pg))
 	return nil
 }

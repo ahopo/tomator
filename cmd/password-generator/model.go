@@ -2,7 +2,11 @@ package passwordgenerator
 
 import "github.com/urfave/cli/v2"
 
-type Generate struct {
+type Model struct {
+	Allow_repeats bool   `json:"Allow Repeats"`
+	Allow_upper   bool   `json:"Allow Upper"`
+	Length        int    `json:"Length"`
+	Pass          string `json:"Pass"`
 }
 
 var CommonFlag = []cli.Flag{
@@ -15,9 +19,11 @@ var CommonFlag = []cli.Flag{
 	&cli.BoolFlag{
 		Name:  "allow-upper",
 		Usage: "Allow Uppercase.",
+		Value: false,
 	},
 	&cli.BoolFlag{
 		Name:  "allow-repeats",
 		Usage: "Allow repeats of character.",
+		Value: false,
 	},
 }
