@@ -5,6 +5,7 @@ import "github.com/urfave/cli/v2"
 func targetCom() (targetCom *cli.Command) {
 	targetCom = &cli.Command{}
 	targetCom.Name = "target-file"
+	targetCom.Aliases = []string{"tf"}
 	targetCom.Usage = "To arrange specific file extensions."
 	targetCom.Action = model().target
 	targetCom.Flags = CommonFlag

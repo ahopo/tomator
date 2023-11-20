@@ -3,7 +3,7 @@ package yjjy
 import (
 	"fmt"
 	"log"
-	"tomator/cmd/common/util"
+	file "tomator/cmd/common/util/file"
 
 	"github.com/ghodss/yaml"
 	"github.com/urfave/cli/v2"
@@ -25,7 +25,7 @@ func (m *Model) convertYJ(cCtx *cli.Context) error {
 		return nil
 	}
 	//FILE INPUT
-	file := util.InitFile(cCtx.String("file"))
+	file := file.Init(cCtx.String("file"))
 	//validate file exist and in yaml extension.
 	if file.IsValid && file.Ext != m.YAML {
 		log.Fatal("Not a yaml file.")
@@ -49,7 +49,7 @@ func (m *Model) convertJY(cCtx *cli.Context) error {
 		return nil
 	}
 	//FILE INTPU
-	file := util.InitFile(cCtx.String("file"))
+	file := file.Init(cCtx.String("file"))
 	//validate file exist and in yaml extension.
 	if file.IsValid && file.Ext != m.JSON {
 		log.Fatal("Not a yaml file.")

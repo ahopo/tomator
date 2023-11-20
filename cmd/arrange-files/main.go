@@ -2,6 +2,7 @@ package arrangefiles
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/urfave/cli/v2"
 )
@@ -12,9 +13,7 @@ func model() Model {
 
 func (a Model) target(cCtx *cli.Context) error {
 
-	for _, d := range cCtx.StringSlice("src") {
-		fmt.Print(d)
-	}
+	log.Println(cCtx.String("src"))
 	return nil
 }
 func (a Model) all(cCtx *cli.Context) error {
