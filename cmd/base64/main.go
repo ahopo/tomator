@@ -7,10 +7,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func model() Model {
-	return Model{}
-}
-func (m Model) decode(cCtx *cli.Context) error {
+func decode(cCtx *cli.Context) error {
 
 	str := cCtx.Args().Get(0)
 	decodedStr, err := base64.StdEncoding.DecodeString(str)
@@ -20,7 +17,7 @@ func (m Model) decode(cCtx *cli.Context) error {
 	fmt.Println(string(decodedStr))
 	return nil
 }
-func (m Model) encode(cCtx *cli.Context) error {
+func encode(cCtx *cli.Context) error {
 	str := cCtx.Args().Get(0)
 	encodedStr := base64.StdEncoding.EncodeToString([]byte(str))
 	fmt.Println(encodedStr)
