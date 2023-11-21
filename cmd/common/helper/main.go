@@ -30,7 +30,7 @@ func (m MainCom) MainCommand() *cli.Command {
 		Usage:   m.Usage,
 	}
 
-	for _, val := range m.SubCommands {
+	for _, val := range m.SubCommands() {
 		com.Subcommands = append(com.Subcommands, val.SubCommand())
 	}
 	return com

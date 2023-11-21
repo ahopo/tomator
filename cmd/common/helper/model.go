@@ -23,5 +23,5 @@ type MainCom struct {
 	Name        string
 	Aliases     []string
 	Usage       string
-	SubCommands []SBCM
+	SubCommands func() []SBCM
 }

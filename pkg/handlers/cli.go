@@ -26,9 +26,11 @@ func commands() *cli.Commands {
 
 	coms = append(coms, af.Command())
 	coms = append(coms, pg.Command())
-	coms = append(coms, b64.Command())
-	cc := helper.MainCom{SubCommands: cc.SubCommands(), Name: "convert-config", Aliases: []string{"cc"}, Usage: "Convert fromt YAML to JSON or JSON to YAML"}
-	comms := []helper.MNCM{cc}
-	coms = append(coms, comms[0].MainCommand())
+
+	comms := []helper.MNCM{cc.Command(), b64.Command()}
+	for _, v := range comms {
+		coms = append(coms, v.MainCommand())
+	}
+
 	return &coms
 }

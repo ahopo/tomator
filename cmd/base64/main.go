@@ -8,34 +8,31 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func decode(cCtx *cli.Context) error {
+const (
+	Decode = "decode"
+	Encode = "encode"
+)
 
+func theaction(cCtx *cli.Context) error {
 	str := cCtx.Args().Get(0)
-	decodedStr, err := base64.StdEncoding.DecodeString(str)
-	if err != nil {
-		panic("malformed input")
+	switch cCtx.Command.Name {
+	case Decode:
+		decodedStr, err := base64.StdEncoding.DecodeString(str)
+		helper.CheckError(err, true)
+		fmt.Println(string(decodedStr))
+	case Encode:
+		encodedStr := base64.StdEncoding.EncodeToString([]byte(str))
+		fmt.Println(encodedStr)
 	}
-	fmt.Println(string(decodedStr))
 	return nil
 }
-func encode(cCtx *cli.Context) error {
-	str := cCtx.Args().Get(0)
-	encodedStr := base64.StdEncoding.EncodeToString([]byte(str))
-	fmt.Println(encodedStr)
-	return nil
+
+func b64() []helper.SBCM {
+	decode := helper.SubCom{Action: theaction, Name: Decode, Aliases: []string{"d"}, Usage: "To decode given base64 input"}
+	encode := helper.SubCom{Action: theaction, Name: Encode, Aliases: []string{"e"}, Usage: "To encode base64 given raw input"}
+	return []helper.SBCM{&decode, &encode}
 }
 
-func Command() *cli.Command {
-	com := &cli.Command{
-		Name:    "base64",
-		Aliases: []string{"b64"},
-		Usage:   "To decode and encode.",
-	}
-	decode := helper.SubCom{Action: decode, Name: "decode", Aliases: []string{"d"}, Usage: "To decode given base64 input"}
-	encode := helper.SubCom{Action: encode, Name: "encode", Aliases: []string{"e"}, Usage: "To encode base64 given raw input"}
-	b64 := []helper.SBCM{&decode, &encode}
-	for _, val := range b64 {
-		com.Subcommands = append(com.Subcommands, val.SubCommand())
-	}
-	return com
+func Command() helper.MainCom {
+	return helper.MainCom{SubCommands: b64, Name: "base64", Aliases: []string{"b64"}, Usage: "Convert fromt YAML to JSON or JSON to YAML"}
 }
