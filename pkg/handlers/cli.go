@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"log"
 	"os"
 	af "tomator/cmd/arrange-files"
 	b64 "tomator/cmd/base64"
+	"tomator/cmd/common/helper"
 	cc "tomator/cmd/convert-config"
 	pg "tomator/cmd/password-generator"
 
@@ -12,21 +12,23 @@ import (
 )
 
 func Init() {
-
-	coms := cli.Commands{}
-	coms = append(coms, af.Command())
-	coms = append(coms, pg.Command())
-	coms = append(coms, b64.Command())
-	coms = append(coms, cc.Command())
-
 	app := &cli.App{
 		Name:     "tomator",
 		Usage:    "automate your daily repetitive task!",
 		Authors:  []*cli.Author{{Name: "aopo", Email: "alfieopo@gmail.com"}},
-		Commands: coms,
+		Commands: *commands(),
 	}
+	err := app.Run(os.Args)
+	helper.CheckError(err, true)
+}
+func commands() *cli.Commands {
+	coms := cli.Commands{}
 
-	if err := app.Run(os.Args); err != nil {
-		log.Fatal(err)
-	}
+	coms = append(coms, af.Command())
+	coms = append(coms, pg.Command())
+	coms = append(coms, b64.Command())
+	cc := helper.MainCom{SubCommands: cc.SubCommands(), Name: "convert-config", Aliases: []string{"cc"}, Usage: "Convert fromt YAML to JSON or JSON to YAML"}
+	comms := []helper.MNCM{cc}
+	coms = append(coms, comms[0].MainCommand())
+	return &coms
 }

@@ -4,12 +4,12 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-type Model struct {
-	YAML string
-	JSON string
-}
+const (
+	YAML = ".yml"
+	JSON = ".json"
+)
 
-var CommonFlag = []cli.Flag{
+var commonFlag = []cli.Flag{
 	&cli.StringFlag{
 		Name:  "file",
 		Usage: "Will convert file",

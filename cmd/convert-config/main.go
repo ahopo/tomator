@@ -3,19 +3,14 @@ package yjjy
 import (
 	"fmt"
 	"log"
+	"tomator/cmd/common/helper"
 	file "tomator/cmd/common/util/file"
 
 	"github.com/ghodss/yaml"
 	"github.com/urfave/cli/v2"
 )
 
-func model() Model {
-	return Model{
-		YAML: ".yml",
-		JSON: ".json",
-	}
-}
-func (m *Model) convertYJ(cCtx *cli.Context) error {
+func convertYJ(cCtx *cli.Context) error {
 	//STRING INPUT
 	str := cCtx.String("string")
 	//check if str flag has value then process.
@@ -27,7 +22,7 @@ func (m *Model) convertYJ(cCtx *cli.Context) error {
 	//FILE INPUT
 	file := file.Init(cCtx.String("file"))
 	//validate file exist and in yaml extension.
-	if file.IsValid && file.Ext != m.YAML {
+	if file.IsValid && file.Ext != YAML {
 		log.Fatal("Not a yaml file.")
 	}
 
@@ -39,7 +34,7 @@ func (m *Model) convertYJ(cCtx *cli.Context) error {
 	}
 	return nil
 }
-func (m *Model) convertJY(cCtx *cli.Context) error {
+func convertJY(cCtx *cli.Context) error {
 	//STRING INPUT
 	str := cCtx.String("string")
 	//check if str flag has value then process.
@@ -51,7 +46,7 @@ func (m *Model) convertJY(cCtx *cli.Context) error {
 	//FILE INTPU
 	file := file.Init(cCtx.String("file"))
 	//validate file exist and in yaml extension.
-	if file.IsValid && file.Ext != m.JSON {
+	if file.IsValid && file.Ext != JSON {
 		log.Fatal("Not a yaml file.")
 	}
 
@@ -63,4 +58,9 @@ func (m *Model) convertJY(cCtx *cli.Context) error {
 	}
 
 	return nil
+}
+func SubCommands() []helper.SBCM {
+	jy := helper.SubCom{Action: convertJY, Name: "jsontoyaml", Aliases: []string{"jy"}, Usage: "Convert fom JSON to YAML", Flag: commonFlag}
+	yj := helper.SubCom{Action: convertYJ, Name: "yamltojson", Aliases: []string{"yj"}, Usage: "Convert fom YAML to JSON", Flag: commonFlag}
+	return []helper.SBCM{&jy, &yj}
 }
