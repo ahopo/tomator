@@ -50,6 +50,6 @@ func b64() []helper.SBCM {
 	return []helper.SBCM{&decode, &encode}
 }
 
-func Command() helper.MainCom {
+func Subcommand() helper.MainCom {
 	return helper.MainCom{SubCommands: b64, Name: "base64", Aliases: []string{"b64"}, Usage: "Convert fromt YAML to JSON or JSON to YAML"}
 }

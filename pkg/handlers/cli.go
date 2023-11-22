@@ -16,21 +16,22 @@ func Init() {
 		Name:     "tomator",
 		Usage:    "automate your daily repetitive task!",
 		Authors:  []*cli.Author{{Name: "aopo", Email: "alfieopo@gmail.com"}},
-		Commands: *commands(),
+		Commands: commands(),
 	}
 	err := app.Run(os.Args)
 	helper.CheckError(err, true)
 }
-func commands() *cli.Commands {
-	coms := cli.Commands{}
 
-	coms = append(coms, af.Command())
-	coms = append(coms, pg.Command())
-
-	comms := []helper.MNCM{cc.Command(), b64.Command()}
-	for _, v := range comms {
-		coms = append(coms, v.MainCommand())
+func commands() (scom []*cli.Command) {
+	comms := []helper.MNCM{
+		cc.Subcommand(),
+		b64.Subcommand(),
+		af.Subcommand(),
+	}
+	scom = append(scom, pg.Command())
+	for _, val := range comms {
+		scom = append(scom, val.MainCommand())
 	}
 
-	return &coms
+	return
 }

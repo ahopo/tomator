@@ -65,7 +65,7 @@ func convertyjjy() []helper.SBCM {
 	return []helper.SBCM{&jy, &yj}
 }
 
-func Command() helper.MainCom {
+func Subcommand() helper.MainCom {
 	return helper.MainCom{
 		SubCommands: convertyjjy,
 		Name:        "convert-config",
