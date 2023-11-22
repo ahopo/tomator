@@ -8,28 +8,45 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-const (
-	Decode = "decode"
-	Encode = "encode"
-)
+type model struct {
+	d   string
+	e   string
+	raw string
+}
 
-func theaction(cCtx *cli.Context) error {
-	str := cCtx.Args().Get(0)
+func (m *model) encode() string {
+	return base64.StdEncoding.EncodeToString([]byte(m.raw))
+}
+func (m *model) decode() string {
+	decodedStr, err := base64.StdEncoding.DecodeString(m.raw)
+	helper.CheckError(err, true)
+	return string(decodedStr)
+}
+
+func initModel(raw string) *model {
+	m := &model{
+		d:   "decode",
+		e:   "encode",
+		raw: raw,
+	}
+	return m
+}
+
+func action(cCtx *cli.Context) error {
+	m := initModel(cCtx.Args().Get(0))
 	switch cCtx.Command.Name {
-	case Decode:
-		decodedStr, err := base64.StdEncoding.DecodeString(str)
-		helper.CheckError(err, true)
-		fmt.Println(string(decodedStr))
-	case Encode:
-		encodedStr := base64.StdEncoding.EncodeToString([]byte(str))
-		fmt.Println(encodedStr)
+	case m.d:
+		fmt.Println(m.decode())
+	case m.e:
+		fmt.Println(m.encode())
 	}
 	return nil
 }
 
 func b64() []helper.SBCM {
-	decode := helper.SubCom{Action: theaction, Name: Decode, Aliases: []string{"d"}, Usage: "To decode given base64 input"}
-	encode := helper.SubCom{Action: theaction, Name: Encode, Aliases: []string{"e"}, Usage: "To encode base64 given raw input"}
+	m := initModel("")
+	decode := helper.SubCom{Action: action, Name: m.d, Aliases: []string{"d"}, Usage: "To decode given base64 input"}
+	encode := helper.SubCom{Action: action, Name: m.e, Aliases: []string{"e"}, Usage: "To encode base64 given raw input"}
 	return []helper.SBCM{&decode, &encode}
 }
 
