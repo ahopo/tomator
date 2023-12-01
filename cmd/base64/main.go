@@ -8,23 +8,17 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-type model struct {
-	d   string
-	e   string
-	raw string
-}
-
-func (m *model) encode() string {
+func (m *Model) encode() string {
 	return base64.StdEncoding.EncodeToString([]byte(m.raw))
 }
-func (m *model) decode() string {
+func (m *Model) decode() string {
 	decodedStr, err := base64.StdEncoding.DecodeString(m.raw)
 	helper.CheckError(err, true)
 	return string(decodedStr)
 }
 
-func initModel(raw string) *model {
-	m := &model{
+func initModel(raw string) *Model {
+	m := &Model{
 		d:   "decode",
 		e:   "encode",
 		raw: raw,
@@ -43,13 +37,26 @@ func action(cCtx *cli.Context) error {
 	return nil
 }
 
-func b64() []helper.SBCM {
-	m := initModel("")
-	decode := helper.SubCom{Action: action, Name: m.d, Aliases: []string{"d"}, Usage: "To decode given base64 input"}
-	encode := helper.SubCom{Action: action, Name: m.e, Aliases: []string{"e"}, Usage: "To encode base64 given raw input"}
-	return []helper.SBCM{&decode, &encode}
+type Model struct {
+	Name    string
+	Usage   string
+	Aliases []string
+	d       string
+	e       string
+	raw     string
 }
 
-func Subcommand() helper.MainCom {
-	return helper.MainCom{SubCommands: b64, Name: "base64", Aliases: []string{"b64"}, Usage: "Convert fromt YAML to JSON or JSON to YAML"}
+func (m *Model) subCommands() []*cli.Command {
+	m = initModel("")
+	return []*cli.Command{{
+		Action: action, Name: m.d, Usage: "To decode given base64 input",
+	}, {Action: action, Name: m.e, Usage: "To encode base64 given raw input"}}
+}
+func (m Model) Commands() *cli.Command {
+	return &cli.Command{
+		Subcommands: m.subCommands(),
+		Name:        m.Name,
+		Usage:       m.Usage,
+		Aliases:     m.Aliases,
+	}
 }

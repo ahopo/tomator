@@ -3,7 +3,6 @@ package yjjy
 import (
 	"fmt"
 	"log"
-	"tomator/cmd/common/helper"
 	file "tomator/cmd/common/util/file"
 
 	"github.com/ghodss/yaml"
@@ -59,17 +58,17 @@ func convertJY(cCtx *cli.Context) error {
 
 	return nil
 }
-func convertyjjy() []helper.SBCM {
-	jy := helper.SubCom{Action: convertJY, Name: "jsontoyaml", Aliases: []string{"jy"}, Usage: "Convert fom JSON to YAML", Flag: commonFlag}
-	yj := helper.SubCom{Action: convertYJ, Name: "yamltojson", Aliases: []string{"yj"}, Usage: "Convert fom YAML to JSON", Flag: commonFlag}
-	return []helper.SBCM{&jy, &yj}
+func (m Model) subCommands() []*cli.Command {
+	return []*cli.Command{
+		{Action: convertJY, Name: "jsontoyaml", Aliases: []string{"jy"}, Usage: "Convert fom JSON to YAML", Flags: commonFlags},
+		{Action: convertYJ, Name: "yamltojson", Aliases: []string{"yj"}, Usage: "Convert fom YAML to JSON", Flags: commonFlags},
+	}
 }
-
-func Subcommand() helper.MainCom {
-	return helper.MainCom{
-		SubCommands: convertyjjy,
-		Name:        "convert-config",
-		Aliases:     []string{"cc"},
-		Usage:       "Convert fromt YAML to JSON or JSON to YAML",
+func (m Model) Commands() *cli.Command {
+	return &cli.Command{
+		Subcommands: m.subCommands(),
+		Name:        m.Name,
+		Usage:       m.Usage,
+		Aliases:     m.Aliases,
 	}
 }

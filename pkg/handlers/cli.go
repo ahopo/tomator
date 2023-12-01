@@ -2,11 +2,9 @@ package handlers
 
 import (
 	"os"
-	af "tomator/cmd/arrange-files"
-	b64 "tomator/cmd/base64"
+	"tomator/cmd/base64"
 	"tomator/cmd/common/helper"
 	cc "tomator/cmd/convert-config"
-	pg "tomator/cmd/password-generator"
 
 	"github.com/urfave/cli/v2"
 )
@@ -23,15 +21,19 @@ func Init() {
 }
 
 func commands() (scom []*cli.Command) {
-	comms := []helper.MNCM{
-		cc.Subcommand(),
-		b64.Subcommand(),
-		af.Subcommand(),
+	comms := []helper.CLI{
+		cc.Model{
+			Name:    "convert-config",
+			Usage:   "Convert YAML to JSON or JSON to YAML",
+			Aliases: []string{"cc"},
+		},
+		base64.Model{
+			Name:    "base64",
+			Usage:   "Encode and Decode",
+			Aliases: []string{"b64"},
+		}}
+	for _, c := range comms {
+		scom = append(scom, c.Commands())
 	}
-	scom = append(scom, pg.Command())
-	for _, val := range comms {
-		scom = append(scom, val.MainCommand())
-	}
-
 	return
 }

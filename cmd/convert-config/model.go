@@ -9,7 +9,7 @@ const (
 	JSON = ".json"
 )
 
-var commonFlag = []cli.Flag{
+var commonFlags = []cli.Flag{
 	&cli.StringFlag{
 		Name:  "file",
 		Usage: "Will convert file",
@@ -19,4 +19,10 @@ var commonFlag = []cli.Flag{
 		Aliases: []string{"str", "text"},
 		Usage:   "Will convert string/text",
 	},
+}
+
+type Model struct {
+	Name    string
+	Usage   string
+	Aliases []string
 }
